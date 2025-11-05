@@ -1,12 +1,12 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useParams } from 'next/navigation'
 import { blogService } from '../../services/blog'
 import Navbar from '../../components/Navbar'
 import Link from 'next/link'
 import { useAuth } from '../../context/AuthContext'
 
-export default function BlogDetail() {
+function BlogDetailContent() {
   const [blog, setBlog] = useState(null)
   const [loading, setLoading] = useState(true)
   const { id } = useParams()
@@ -79,7 +79,7 @@ export default function BlogDetail() {
           {/* Blog Image */}
           {blog.image && (
             <img 
-              src={blog.imageUrl || `http://localhost:8080/uploads/${blog.image}`}
+              src={blog.imageUrl || `URL_WEB/uploads/${blog.image}`}
               alt={blog.title}
               className="w-full h-64 md:h-96 object-cover"
               onError={(e) => {
@@ -146,5 +146,22 @@ export default function BlogDetail() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function BlogDetail() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center items-center h-64">
+            <div className="loading-spinner"></div>
+          </div>
+        </div>
+      </div>
+    }>
+      <BlogDetailContent />
+    </Suspense>
   )
 }
