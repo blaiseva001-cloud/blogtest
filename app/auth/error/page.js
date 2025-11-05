@@ -1,9 +1,11 @@
 'use client'
-import { useEffect, Suspense } from 'react'
+export const dynamic = 'force-dynamic'
+
+import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
-function AuthErrorContent() {
+export default function AuthError() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const message = searchParams.get('message') || 'Authentication failed'
@@ -45,22 +47,5 @@ function AuthErrorContent() {
         </p>
       </div>
     </div>
-  )
-}
-
-export default function AuthError() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="loading-spinner mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-900">
-            Loading...
-          </h2>
-        </div>
-      </div>
-    }>
-      <AuthErrorContent />
-    </Suspense>
   )
 }
